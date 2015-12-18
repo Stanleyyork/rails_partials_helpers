@@ -9,7 +9,7 @@ class UsersController < ApplicationController
   def new
     # don't let current_user see the sign up view
     if current_user
-      redirect_to "/users/#{current_user.id}"
+      redirect_to user_path(current_user)
     else
       @user = User.new
     end
@@ -18,16 +18,16 @@ class UsersController < ApplicationController
   def create
     # don't let current_user create new account
     if current_user
-      redirect_to "/users/#{current_user.id}"
+      redirect_to user_path(current_user)
     else
       @user = User.new(user_params)
       if @user.save
         session[:user_id] = @user.id
         flash[:notice] = "Successfully signed up."
-        redirect_to "/users/#{@user.id}"
+        redirect_to user_path(current_user)
       else
         flash[:error] = @user.errors.full_messages.join(", ")
-        redirect_to "/signup"
+        redirect_to signup_path
       end
     end
   end
@@ -38,7 +38,7 @@ class UsersController < ApplicationController
   def edit
     # don't let current_user see another user's edit view
     unless current_user == @user
-      redirect_to "/users/#{current_user.id}"
+      redirect_to user_path(current_user)
     end
   end
 
@@ -47,13 +47,13 @@ class UsersController < ApplicationController
     if current_user == @user
       if @user.update_attributes(user_params)
         flash[:notice] = "Successfully updated profile."
-        redirect_to "/users/#{@user.id}"
+        redirect_to user_path(current_user)
       else
         flash[:error] = @user.errors.full_messages.join(", ")
-        redirect_to "/users/#{@user.id}/edit"
+        redirect_to edit_user_path(current_user)
       end
     else
-      redirect_to "/users/#{current_user.id}"
+      redirect_to user_path(current_user)
     end
   end
 
@@ -65,7 +65,7 @@ class UsersController < ApplicationController
       flash[:notice] = "Successfully deleted profile."
       redirect_to "/"
     else
-      redirect_to "/users/#{current_user.id}"
+      redirect_to user_path(current_user)
     end
   end
 

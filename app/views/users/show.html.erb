@@ -8,7 +8,7 @@
   <hr>
   <p>
     <%= link_to "Edit Profile", edit_user_path, :class => "btn btn-default" %>
-    <%= link_to "Delete Profile", delete_user_path, :class => "btn btn-default" %>
+    <%= link_to "Delete Profile", user_path(@user), method: :delete, :class => "btn btn-default" %>
   </p>
 <% end %>
 
